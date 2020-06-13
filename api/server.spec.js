@@ -30,13 +30,38 @@ describe("server.js", () => {
       expect(res.body).toEqual({});
     });
 
-    it("should successfully log in", async () => {
-      const res = await request(server).post("/api/auth/login").send({
+    it("should successfully log in ", async () => {
+      let res = await request(server).post("/api/auth/login").send({
+        username: "quimb",
+        password: "quimble",
+      });
+
+      expect(res.body.message).toEqual("welcome, quimb");
+    });
+
+    it("should successfully log in and test authentication", async () => {
+      let res = await request(server).post("/api/auth/login").send({
         username: "jon",
         password: "quimble",
       });
 
       expect(res.body.message).toEqual("welcome, jon");
+
+      let token = "bearer " + res.body.token;
+      res = await request(server)
+        .get("/api/jokes")
+        .set({ Authorization: token });
+
+      expect(Array.isArray(res.body)).toBe(true);
+    });
+
+    it("should successfully register", async () => {
+      const res = await request(server).post("/api/auth/register").send({
+        username: "zebra",
+        password: "friend",
+      });
+
+      expect(res.body.message).toEqual("Registration successful");
     });
   });
 });

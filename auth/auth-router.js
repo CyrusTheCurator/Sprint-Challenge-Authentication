@@ -12,7 +12,9 @@ router.route("/register").post((req, res) => {
 
   Users.addUser(user)
     .then((userRegRes) => {
-      res.status(201).json(userRegRes);
+      res
+        .status(201)
+        .json({ message: "Registration successful", regInfo: userRegRes });
     })
     .catch((err) => {
       res
