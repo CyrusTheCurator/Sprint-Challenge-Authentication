@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import logo from "./logo.svg";
 import "./App.css";
 import { axiosWithAuth } from "./utils/axiosWithAuth";
+import axios from "axios";
 
 function App(props) {
   const [credentials, setCredentials] = useState("");
@@ -20,22 +21,22 @@ function App(props) {
 
   const login = (e) => {
     e.preventDefault();
-    axiosWithAuth
+    axios
       .post("http://localhost:3300/api/auth/login", credentials)
       .then((res) => {
         console.log("Login successful", res);
-        localStorage.setItem("token", res.data.payload.token);
-        localStorage.setItem("username", res.data.payload.username);
-        console.log(res.data.payload.token, res.data.payload.username);
+        localStorage.setItem("token", res.data.token);
+        localStorage.setItem("username", res.data.username);
+        console.log(res.data.token, res.data.username);
       })
       .catch((err) => console.error("There was an error, sorry. ", err));
 
-    axiosWithAuth
-      .get("http://localhost:3300/api/jokes", credentials)
-      .then((res) => {
-        console.log("Login successful", res);
-      })
-      .catch((err) => console.error("There was an error, sorry. ", err));
+    // axiosWithAuth
+    //   .get("http://localhost:3300/api/jokes", credentials)
+    //   .then((res) => {
+    //     console.log("Login successful", res);
+    //   })
+    //   .catch((err) => console.error("There was an error, sorry. ", err));
   };
   return (
     <div className="App">
