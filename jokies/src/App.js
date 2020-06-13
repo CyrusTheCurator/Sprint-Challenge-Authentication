@@ -78,8 +78,13 @@ function App(props) {
             <button type="submit" variant="primary">
               Log in
             </button>
+            {jokes.length > 1 ? (
+              <h4>I guess you are a dad after all... Here's your jokes.</h4>
+            ) : (
+              <h6>I don't see any dads here.</h6>
+            )}
             {jokes.map((joke) => {
-              return <div>{joke.joke}</div>;
+              return <div className="jokeCard">{joke.joke}</div>;
             })}
           </div>
         </form>

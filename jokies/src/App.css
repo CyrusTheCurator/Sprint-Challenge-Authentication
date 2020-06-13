@@ -40,3 +40,12 @@
 h1 {
   padding: 0vw 10vw;
 }
+
+.jokeCard {
+  min-width: 10vw;
+  max-width: 30vw;
+  max-height: 30vh;
+  margin: 100px;
+  background-color: black;
+  padding: 25px;
+}
