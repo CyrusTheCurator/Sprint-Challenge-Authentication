@@ -39,6 +39,15 @@ describe("server.js", () => {
       expect(res.body.message).toEqual("welcome, quimb");
     });
 
+    it("should fail log in ", async () => {
+      let res = await request(server).post("/api/auth/login").send({
+        username: "quimb",
+        password: "quimblze",
+      });
+
+      expect(res.body.message).toEqual("username or password incorrect");
+    });
+
     it("should successfully log in and test authentication", async () => {
       let res = await request(server).post("/api/auth/login").send({
         username: "jon",
@@ -62,6 +71,14 @@ describe("server.js", () => {
       });
 
       expect(res.body.message).toEqual("Registration successful");
+    });
+
+    it("should fail register", async () => {
+      const res = await request(server).post("/api/auth/register").send({
+        username: "zebra",
+      });
+
+      expect(res.status).toEqual(500);
     });
   });
 });
