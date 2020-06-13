@@ -34,15 +34,7 @@ function App(props) {
         console.log("Login successful", res);
         localStorage.setItem("token", "bearer " + res.data.token);
         localStorage.setItem("username", res.data.username);
-      })
-      .catch((err) => console.error("There was an error, sorry. ", err));
-
-    axios
-      .get("http://localhost:3300/api/jokes", {
-        headers: { Authorization: localStorage.getItem("token") },
-      })
-      .then((res) => {
-        console.log("you retrieved a jokeee successful", res);
+        window.location.reload(false);
       })
       .catch((err) => console.error("There was an error, sorry. ", err));
   };
