@@ -6,18 +6,25 @@ import axios from "axios";
 
 function App(props) {
   const [credentials, setCredentials] = useState("");
-
+  const [jokes, setJokes] = useState([]);
   const handleChange = (e, setter) => {
     setCredentials({
       ...credentials,
       [e.target.name]: e.target.value,
     });
   };
-
   useEffect(() => {
-    //this is just to log our changes
-    console.log(credentials);
-  }, [credentials]);
+    axios
+      .get("http://localhost:3300/api/jokes", {
+        headers: { Authorization: localStorage.getItem("token") },
+      })
+      .then((res) => {
+        console.log("you retrieved a jokeee successful", res);
+
+        setJokes([...res.data]);
+      })
+      .catch((err) => console.error("There was an error, sorry. ", err));
+  }, []);
 
   const login = (e) => {
     e.preventDefault();
@@ -25,18 +32,19 @@ function App(props) {
       .post("http://localhost:3300/api/auth/login", credentials)
       .then((res) => {
         console.log("Login successful", res);
-        localStorage.setItem("token", res.data.token);
+        localStorage.setItem("token", "bearer " + res.data.token);
         localStorage.setItem("username", res.data.username);
-        console.log(res.data.token, res.data.username);
       })
       .catch((err) => console.error("There was an error, sorry. ", err));
 
-    // axiosWithAuth
-    //   .get("http://localhost:3300/api/jokes", credentials)
-    //   .then((res) => {
-    //     console.log("Login successful", res);
-    //   })
-    //   .catch((err) => console.error("There was an error, sorry. ", err));
+    axios
+      .get("http://localhost:3300/api/jokes", {
+        headers: { Authorization: localStorage.getItem("token") },
+      })
+      .then((res) => {
+        console.log("you retrieved a jokeee successful", res);
+      })
+      .catch((err) => console.error("There was an error, sorry. ", err));
   };
   return (
     <div className="App">
@@ -70,11 +78,9 @@ function App(props) {
             <button type="submit" variant="primary">
               Log in
             </button>
-            {/* <Link to="/sign-up">
-              <button onClick={(e) => {}} variant="secondary">
-                Sign Up
-              </button>
-            </Link> */}
+            {jokes.map((joke) => {
+              return <div>{joke.joke}</div>;
+            })}
           </div>
         </form>
       </header>
